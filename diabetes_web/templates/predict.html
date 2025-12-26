@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dự báo nguy cơ tiểu đường</title>
+  <style>
+    body{font-family:Arial; max-width:900px; margin:30px auto; padding:0 14px;}
+    .card{border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px;}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+    label{font-weight:600;}
+    input{width:100%; padding:10px; border:1px solid #ccc; border-radius:10px;}
+    .btn{padding:10px 16px; border:none; border-radius:10px; cursor:pointer; background:#111827; color:#fff;}
+    .err{color:#b91c1c; margin:6px 0 0;}
+    .result{font-size:18px; font-weight:700;}
+  </style>
+</head>
+<body>
+
+  <h1>Web dự đoán diabetes_risk_score (Linear Regression)</h1>
+
+  <div class="card">
+    <h2>Nhập dữ liệu</h2>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="row">
+        {% for field in form %}
+          <div>
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="err">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div style="margin-top:14px;">
+        <button class="btn" type="submit">Dự đoán</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Kết quả</h2>
+    {% if result is not None %}
+      <div class="result">Diabetes Risk Score (dự đoán): {{ result }}</div>
+    {% else %}
+      <div>Chưa có kết quả. Hãy nhập dữ liệu và bấm “Dự đoán”.</div>
+    {% endif %}
+    <p style="margin-top:10px; color:#555;">
+      *Mô hình phục vụ mục đích học tập, không thay thế tư vấn y khoa.
+    </p>
+  </div>
+
+</body>
+</html>
